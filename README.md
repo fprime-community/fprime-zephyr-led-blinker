@@ -17,13 +17,42 @@ Make sure you are in virtual environment
 . ~/zephyrproject/.venv/bin/activate
 ```
 
+Make sure you have fprime dependencies installed
 ```sh
-fprime-util generate zephyr -DBOARD=teensy41
-fprime-util build zephyr
+pip install -r "fprime/requirements.txt"
+```
+
+By default, the toolchain is set to `zephyr` in the `settings.ini` file. Don't change this.
+
+### Building Deployment
+```sh
+fprime-util generate -DBOARD=teensy41
+fprime-util build -j4
 ```
 > Change `teensy41` to your board of choice. List of supported boards [here](https://docs.zephyrproject.org/latest/boards/index.html#boards)
 
-Run GDS, we have to give wrx access to ACM device. Why? idk.
+If you plan to build for multiple boards, you will have to purge your build cache and regenerate using the commands above with the proper board name.
+```sh
+fprime-util purge zephyr -f
+```
+
+The only tested board was the Teensy 4.1. Building for other boards may require you to edit the `proj.conf` file and add a `.overlay` file inside of the [`boards/`](./boards/) directory.
+
+### Uploading to board
+Currently, there is a [`Stub.cpp`](./LedBlinker/Stub.cpp) file in the LedBlinker deployment. This is because the Zephyr build system generates its own binary executable independent from the Fprime build system. The Zephyr build system works, and links all of the necessary Zephyr and Fprime libraries. However, the Fprime build system still attempts to build its own separate deployment and does not link the proper Zephyr libraries, so it fails. Having a `Stub.cpp` forcess the Fprime deployment to build a binary that does nothing, so it doesn't attempt to look for Zephyr dependencies. 
+
+TLDR: Do not use any binary files generated in the `build-artifacts` directory. They do nothing. Instead, the executable you want will be located in `build-fprime-automatic-zephyr/zephyr/`. 
+
+There should be a few binaries that you can use to upload, which varies depending on the board you are using:
+- `zephyr.bin`
+- `zephyr.elf`
+- `zephyr.exe`
+- `zephyr.hex`
+- `zephyr.uf2`
+- Probably more
+
+### Run GDS
+We have to give wrx access to ACM device. Why? idk.
 ```sh
 sudo chmod 0777 /dev/ttyACM0
 fprime-gds -n --dictionary ./build-artifacts/zephyr/LedBlinker/dict/LedBlinkerTopologyAppDictionary.xml --comm-adapter uart --uart-device /dev/ttyACM0 --uart-baud 115200
