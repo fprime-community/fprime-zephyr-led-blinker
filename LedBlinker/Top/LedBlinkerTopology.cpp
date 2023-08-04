@@ -11,13 +11,7 @@
 // Necessary project-specified types
 #include <Svc/FramingProtocol/FprimeProtocol.hpp>
 
-#include <zephyr/kernel.h>
-#include <zephyr/device.h>
-#include <zephyr/devicetree.h>
-#include <zephyr/drivers/uart.h>
 #include <zephyr/drivers/gpio.h>
-
-const struct device *serial = DEVICE_DT_GET(DT_NODELABEL(cdc_acm_uart0));
 
 static const struct gpio_dt_spec led_pin = GPIO_DT_SPEC_GET(DT_ALIAS(led0), gpios);
 
@@ -76,7 +70,7 @@ void setupTopology(const TopologyState& state) {
     startTasks(state);
     
     rateDriver.configure(1);
-    commDriver.configure(serial, 115200);
+    commDriver.configure(state.dev, state.uartBaud);
     rateDriver.start();
 }
 

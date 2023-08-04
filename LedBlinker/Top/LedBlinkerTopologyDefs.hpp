@@ -10,6 +10,10 @@
 #include "LedBlinker/Top/FppConstantsAc.hpp"
 #include "Svc/FramingProtocol/FprimeProtocol.hpp"
 
+#include <zephyr/kernel.h>
+#include <zephyr/device.h>
+#include <zephyr/drivers/uart.h>
+
 // Definitions are placed within a namespace named after the deployment
 namespace LedBlinker {
 
@@ -22,7 +26,7 @@ namespace LedBlinker {
  * fields, which are derived by command line inputs.
  */
 struct TopologyState {
-    FwIndexType uartNumber;
+    const struct device *dev;
     PlatformIntType uartBaud;
 };
 
