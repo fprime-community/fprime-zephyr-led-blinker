@@ -9,6 +9,7 @@
 
 #include "Zephyr/Drv/ZephyrRateDriver/ZephyrRateDriverComponentAc.hpp"
 #include <Svc/Cycle/TimerVal.hpp>
+#include <zephyr/kernel.h>
 
 namespace Zephyr {
 
@@ -48,8 +49,10 @@ namespace Zephyr {
          */
         void stop();
 
+        void cycle();
+
         //!< Static callback for task function
-        static void s_timer(struct k_timer *timer_id);
+        static void s_timer(void *comp);
 
         //!< Interval of the driver
         U32 m_interval;
@@ -58,7 +61,7 @@ namespace Zephyr {
 
         //!< Last time of run
         Svc::TimerVal m_last;
-        
+        static ZephyrRateDriver* s_driver;
         struct k_timer s_itimer;
 
     };

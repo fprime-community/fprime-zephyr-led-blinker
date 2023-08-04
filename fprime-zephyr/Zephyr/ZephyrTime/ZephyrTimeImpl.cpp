@@ -6,7 +6,6 @@
 
 #include <Zephyr/ZephyrTime/ZephyrTimeImpl.hpp>
 #include <Fw/Time/Time.hpp>
-#include <zephyr/posix/time.h>
 
 namespace Svc {
 

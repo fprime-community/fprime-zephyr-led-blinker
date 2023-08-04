@@ -11,6 +11,7 @@
 
 #include <zephyr/kernel.h>
 #include <zephyr/device.h>
+#include <zephyr/drivers/uart.h>
 #include <zephyr/sys/ring_buffer.h>
 
 #define RING_BUF_SIZE 1024
@@ -20,6 +21,8 @@ namespace Zephyr {
   class ZephyrUartDriver :
     public ZephyrUartDriverComponentBase
   {
+
+    const NATIVE_INT_TYPE SERIAL_BUFFER_SIZE = 64;
 
     public:
 
@@ -37,11 +40,11 @@ namespace Zephyr {
         //!
         ~ZephyrUartDriver();
 
-        void configure();
+        void configure(const struct device *dev, U32 baud_rate);
 
     PRIVATE:
 
-        void serial_cb(const struct device *dev, void *user_data);
+        static void serial_cb(const struct device *dev, void *user_data);
 
         // ----------------------------------------------------------------------
         // Handler implementations for user-defined typed input ports
@@ -64,6 +67,7 @@ namespace Zephyr {
         );
 
         const struct device *m_dev;
+
         U8 m_ring_buf_data[RING_BUF_SIZE];
         struct ring_buf m_ring_buf;
     };

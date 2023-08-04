@@ -9,15 +9,20 @@
 #include <config/FppConstantsAc.hpp>
 
 // Necessary project-specified types
-#include <Fw/Types/MallocAllocator.hpp>
 #include <Svc/FramingProtocol/FprimeProtocol.hpp>
+
+#include <zephyr/kernel.h>
+#include <zephyr/device.h>
+#include <zephyr/devicetree.h>
+#include <zephyr/drivers/uart.h>
+#include <zephyr/drivers/gpio.h>
+
+const struct device *serial = DEVICE_DT_GET(DT_NODELABEL(cdc_acm_uart0));
+
+static const struct gpio_dt_spec led_pin = GPIO_DT_SPEC_GET(DT_ALIAS(led0), gpios);
 
 // Allows easy reference to objects in FPP/autocoder required namespaces
 using namespace LedBlinker;
-
-// The reference topology uses a malloc-based allocator for components that need to allocate memory during the
-// initialization phase.
-Fw::MallocAllocator mallocator;
 
 // The reference topology uses the F´ packet protocol when communicating with the ground and therefore uses the F´
 // framing and deframing implementations.
@@ -48,6 +53,8 @@ void configureTopology() {
     // Framer and Deframer components need to be passed a protocol handler
     framer.setup(framing);
     deframer.setup(deframing);
+
+    gpioDriver.open(led_pin, Zephyr::ZephyrGpioDriver::GpioDirection::OUT);
 }
 
 // Public functions for use in main program are namespaced with deployment name LedBlinker
@@ -69,7 +76,7 @@ void setupTopology(const TopologyState& state) {
     startTasks(state);
     
     rateDriver.configure(1);
-    // commDriver.configure(&Serial);
+    commDriver.configure(serial, 115200);
     rateDriver.start();
 }
 

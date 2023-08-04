@@ -12,10 +12,9 @@ set(SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/LedBlinkerTopology.cpp"
 )
 set(MOD_DEPS
-  Fw/Logger
+  # Fw/Logger
   Zephyr/ZephyrTime
-  Zephyr/Drv/ZephyrUartDriver
-  Os/Baremetal/TaskRunner
+  # Zephyr/Drv/ZephyrUartDriver
 )
 
 register_fprime_module()

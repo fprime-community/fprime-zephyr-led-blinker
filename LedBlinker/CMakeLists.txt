@@ -7,9 +7,6 @@
 #
 #####
 
-# Deployment is only compatible with the Arduino platform
-restrict_platforms(ArduinoFw)
-
 ###
 # Topology and Components
 ###
@@ -19,10 +16,11 @@ add_fprime_subdirectory("${CMAKE_CURRENT_LIST_DIR}/Top/")
 # add_fprime_subdirectory("${CMAKE_CURRENT_LIST_DIR}/MyComponent/")
 
 
-set(SOURCE_FILES "${CMAKE_CURRENT_LIST_DIR}/Main.cpp")
-set(MOD_DEPS ${FPRIME_CURRENT_MODULE}/Top)
+set(SOURCE_FILES "${CMAKE_CURRENT_LIST_DIR}/Stub.cpp")
+set(MOD_DEPS ${FPRIME_CURRENT_MODULE}/Top app)
 
 register_fprime_deployment()
 
-target_sources(app PRIVATE Main.cpp)
+FILE(GLOB app_sources Main.cpp)
+target_sources(app PRIVATE ${app_sources})
 target_link_libraries(app PRIVATE LedBlinker_Top)

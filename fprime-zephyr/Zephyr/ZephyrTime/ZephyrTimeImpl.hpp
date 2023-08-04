@@ -8,6 +8,7 @@
 #define ZEPHYRTIMEIMPL_HPP_
 
 #include <Svc/Time/TimeComponentAc.hpp>
+#include <zephyr/posix/time.h>
 
 namespace Svc {
 

@@ -4,34 +4,20 @@
 //
 // ======================================================================
 // Used to access topology functions
+#include <zephyr/kernel.h>
 #include <LedBlinker/Top/LedBlinkerTopologyAc.hpp>
 #include <LedBlinker/Top/LedBlinkerTopology.hpp>
-// Used for Task Runner
-#include <Os/Baremetal/TaskRunner/TaskRunner.hpp>
 
 // Used for logging
-#include <Os/Log.hpp>
-#include <Arduino/Os/StreamLog.hpp>
+// #include <Os/Log.hpp>
+// #include <Arduino/Os/StreamLog.hpp>
 
 // Instantiate a system logger that will handle Fw::Logger::logMsg calls
-Os::Log logger;
+// Os::Log logger;
 
-// Task Runner
-Os::TaskRunner taskrunner;
-
-/**
- * \brief setup the program
- *
- * This is an extraction of the Arduino setup() function.
- * 
- */
-void setup()
+int main()
 {
-    // Setup Serial
-    // Serial.begin(115200);
-    // Os::setArduinoStreamLogHandler(&Serial);
-    // delay(1000);
-    Fw::Logger::logMsg("Program Started\n");
+    // Fw::Logger::logMsg("Program Started\n");
 
     // Object for communicating state to the reference topology
     LedBlinker::TopologyState inputs;
@@ -40,15 +26,12 @@ void setup()
 
     // Setup topology
     LedBlinker::setupTopology(inputs);
-}
 
-/**
- * \brief run the program
- *
- * This is an extraction of the Arduino loop() function.
- * 
- */
-void loop()
-{
-    taskrunner.run();
+    while(true)
+    {
+        rateDriver.cycle();
+        k_usleep(1);
+    }
+
+    return 0;
 }

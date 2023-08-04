@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <Os/File.hpp>
 #include <Fw/Types/Assert.hpp>
 
