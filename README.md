@@ -6,7 +6,7 @@ F´ (F Prime) is a component-driven framework that enables rapid development and
 **Please Visit the F´ Website:** https://nasa.github.io/fprime/.
 
 
-## Random notes
+## What to do
 
 Follow [getting started guide](https://docs.zephyrproject.org/latest/develop/getting_started/index.html).
 
@@ -20,4 +20,11 @@ Make sure you are in virtual environment
 ```sh
 fprime-util generate zephyr -DBOARD=teensy41
 fprime-util build zephyr
+```
+> Change `teensy41` to your board of choice. List of supported boards [here](https://docs.zephyrproject.org/latest/boards/index.html#boards)
+
+Run GDS, we have to give wrx access to ACM device. Why? idk.
+```sh
+sudo chmod 0777 /dev/ttyACM0
+fprime-gds -n --dictionary ./build-artifacts/zephyr/LedBlinker/dict/LedBlinkerTopologyAppDictionary.xml --comm-adapter uart --uart-device /dev/ttyACM0 --uart-baud 115200
 ```
