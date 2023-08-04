@@ -1,3 +1,0 @@
-add_compile_definitions(TGT_OS_TYPE_ZEPHYR)
-
-set(FPRIME_USE_BAREMETAL_SCHEDULER OFF)

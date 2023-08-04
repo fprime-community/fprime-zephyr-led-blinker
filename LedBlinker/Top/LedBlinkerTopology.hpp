@@ -60,4 +60,5 @@ void setupTopology(const TopologyState& state);
 void teardownTopology(const TopologyState& state);
 
 } // namespace LedBlinker
+
 #endif

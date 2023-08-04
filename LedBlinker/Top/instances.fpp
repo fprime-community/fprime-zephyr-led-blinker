@@ -24,7 +24,7 @@ module LedBlinker {
     priority 98
 
   instance tlmSend: Svc.TlmChan base id 0x0300 \
-    queue size Default.QUEUE_SIZE \
+    queue size 15 \
     stack size Default.STACK_SIZE \
     priority 97
 
@@ -37,6 +37,8 @@ module LedBlinker {
   # ----------------------------------------------------------------------
 
   instance rateGroup1: Svc.PassiveRateGroup base id 0x1000
+
+  instance rateDriver: Zephyr.ZephyrRateDriver base id 0x1100
 
   instance commDriver: Zephyr.ZephyrUartDriver base id 0x4000
 
@@ -58,8 +60,10 @@ module LedBlinker {
 
   instance deframer: Svc.Deframer base id 0x4800
 
-  instance systemResources: Svc.SystemResources base id 0x4900
+  # instance systemResources: Svc.SystemResources base id 0x4900
 
-  instance rateDriver: Zephyr.ZephyrRateDriver base id 0x4A00
+  instance gpioDriver: Zephyr.ZephyrGpioDriver base id 0x4C00
+
+  instance led: Components.Led base id 0x10000
 
 }
