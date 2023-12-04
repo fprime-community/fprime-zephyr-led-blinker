@@ -48,9 +48,7 @@ module LedBlinker {
 
   instance fatalHandler: Svc.FatalHandler base id 0x4300
 
-  instance timeHandler: Svc.Time base id 0x4400 \
-    type "Svc::ZephyrTimeImpl" \
-    at "../../fprime-zephyr/Zephyr/ZephyrTime/ZephyrTimeImpl.hpp"
+  instance timeHandler: Zephyr.ZephyrTime base id 0x4400 \
 
   instance rateGroupDriver: Svc.RateGroupDriver base id 0x4500
 
